@@ -13,3 +13,5 @@ C:\Users\Raphael\Desktop\c#\DIO.Series\obj\Debug\net6.0\DIO.Series.dll
 C:\Users\Raphael\Desktop\c#\DIO.Series\obj\Debug\net6.0\ref\DIO.Series.dll
 C:\Users\Raphael\Desktop\c#\DIO.Series\obj\Debug\net6.0\DIO.Series.pdb
 C:\Users\Raphael\Desktop\c#\DIO.Series\obj\Debug\net6.0\DIO.Series.genruntimeconfig.cache
+C:\Users\Raphael\Desktop\c#\DIO.Series\bin\Debug\net6.0\CsvHelper.dll
+C:\Users\Raphael\Desktop\c#\DIO.Series\obj\Debug\net6.0\DIO.Series.csproj.CopyComplete

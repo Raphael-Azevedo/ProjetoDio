@@ -1,4 +1,5 @@
 ﻿using System;
+using DIO.Series.Filtro;
 
 namespace DIO.Series
 {
@@ -7,11 +8,12 @@ namespace DIO.Series
         static SerieRepositorio repositorio = new SerieRepositorio();
         static void Main(string[] args)
         {
+            repositorio.Logar();
             string opcaoUsuario = ObterOpcaoUsuario();
 
-            while(opcaoUsuario.ToUpper() != "X")
+            while (opcaoUsuario.ToUpper() != "X")
             {
-                switch(opcaoUsuario)
+                switch (opcaoUsuario)
                 {
                     case "1":
                         ListarSerie();
@@ -49,21 +51,31 @@ namespace DIO.Series
             Console.ReadLine();
         }
 
-        private static void ExcluirSerie()  
+        private static void ExcluirSerie()
         {
             Console.Write("Digite o id da série: ");
-            int indiceSerie = int.Parse(Console.ReadLine());
-            System.Console.WriteLine("Você tem certeza que deseja excluir esta série? [S/N]");
-            var opcao = Console.ReadLine().ToUpper();
+            var indiceSerie = Console.ReadLine();
+            if(validacao.IsNumeric(indiceSerie))
+            {
+                System.Console.WriteLine("Você tem certeza que deseja excluir esta série? [S/N]");
+                var opcao = Console.ReadLine().ToUpper();
 
-            if (opcao == "S")
+                if (opcao == "S")
+                {
+                    repositorio.Exclui(int.Parse(indiceSerie));
+                    
+                }
+                else if (opcao == "N")
+                {
+                    System.Console.WriteLine("Cancelado!");
+                }
+                else
+                {
+                    System.Console.WriteLine("Valor invalido!");
+                }
+            }
+            else
             {
-                repositorio.Exclui(indiceSerie);
-                System.Console.WriteLine("Série excluida com sucesso!");
-            }else if (opcao == "N")
-            {
-                System.Console.WriteLine("Cancelado!");
-            }else{
                 System.Console.WriteLine("Valor invalido!");
             }
         }
@@ -73,6 +85,7 @@ namespace DIO.Series
             Console.Write("Digite o id da série: ");
             int indiceSerie = int.Parse(Console.ReadLine());
 
+        
             var serie = repositorio.retornaPorId(indiceSerie);
 
             Console.WriteLine(serie);
@@ -82,18 +95,18 @@ namespace DIO.Series
             System.Console.WriteLine("Digite o id da Série: ");
             int indiceSerie = int.Parse(Console.ReadLine());
 
-           
-            foreach(int i in Enum.GetValues(typeof(Genero)))
+
+            foreach (int i in Enum.GetValues(typeof(Genero)))
             {
-                System.Console.WriteLine("{0}  - {1}", i, Enum.GetName(typeof(Genero),i));
+                System.Console.WriteLine("{0}  - {1}", i, Enum.GetName(typeof(Genero), i));
             }
-            System.Console.Write("Digite o genêro entre as opções acima: ");  
+            System.Console.WriteLine("Digite o genêro entre as opções acima: ");
             int entradaGenero = int.Parse(Console.ReadLine());
 
-            System.Console.Write("Digite o Título da Série: ");
+            System.Console.WriteLine("Digite o Título da Série: ");
             string entradaTitulo = Console.ReadLine();
 
-            System.Console.Write("Digite o Ano de Início da Série: ");
+            System.Console.WriteLine("Digite o Ano de Início da Série: ");
             int entradaAno = int.Parse(Console.ReadLine());
 
             System.Console.WriteLine("Digite a Descrição da Série: ");
@@ -104,7 +117,7 @@ namespace DIO.Series
             titulo: entradaTitulo,
             ano: entradaAno,
             descricao: entradaDescricao);
-            
+
             repositorio.Atualiza(indiceSerie, atualizaSerie);
         }
 
@@ -114,7 +127,7 @@ namespace DIO.Series
 
             var lista = repositorio.Lista();
 
-            if(lista.Count == 0)
+            if (lista.Count == 0)
             {
                 System.Console.WriteLine("Nenhuma série cadastrada.");
                 return;
@@ -124,11 +137,11 @@ namespace DIO.Series
             {
                 var excluido = serie.retornaExcluido();
 
-               
+
                 System.Console.WriteLine("#ID {0}: - {1}   {2}", serie.retornaId(), serie.retornaTitulo(), (excluido ? "*Excluido*" : ""));
-               
+
             }
-            
+
         }
 
         private static void InserirSerie()
@@ -137,7 +150,7 @@ namespace DIO.Series
 
             foreach (int i in Enum.GetValues(typeof(Genero)))
             {
-                System.Console.WriteLine("{0} - {1}",i,Enum.GetName(typeof(Genero),i));
+                System.Console.WriteLine("{0} - {1}", i, Enum.GetName(typeof(Genero), i));
             }
             System.Console.WriteLine("Digite o gênero entre as opções acima: ");
             int entradaGenero = int.Parse(Console.ReadLine());
@@ -151,13 +164,15 @@ namespace DIO.Series
             System.Console.WriteLine("Digite a Descrição da Série: ");
             string entradaDescricao = Console.ReadLine();
 
-            Serie novaSerie = new Serie(id: repositorio.ProximoId(),
+            Serie novaSerie = new Serie
+            (id: repositorio.ProximoId(),
             genero: (Genero)entradaGenero,
             titulo: entradaTitulo,
-            ano: entradaAno,
-            descricao: entradaDescricao);
+            descricao: entradaDescricao,
+            ano: entradaAno);
 
             repositorio.Insere(novaSerie);
+
         }
 
         private static string ObterOpcaoUsuario()
@@ -180,6 +195,6 @@ namespace DIO.Series
             return opcaoUsuario;
         }
 
-      
+
     }
 }
